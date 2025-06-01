@@ -104,6 +104,48 @@ func (f *Fetcher) Resolve(req *base.Request) error {
 		return err
 	}
 	f.meta.Req = req
+
+	extraOpts := f.meta.Opts.Extra.(*fhttp.OptsExtra)
+	if extraOpts.NotRange == true {
+		// 1. 构造 httpReq 用于获取 URL（但不发送实际请求）
+		httpReq, err := f.buildRequest(nil, req)
+		if err != nil {
+			return err
+		}
+
+		// 2. 新建一个 Resource，标记不支持 Range，Size 设为 0
+		res := &base.Resource{
+			Range: false,
+			Size:  0,
+			Files: []*base.FileInfo{},
+		}
+
+		// 3. 从 URL 路径推断文件名
+		//    例如 URL 为 https://example.com/path/to/file.txt，则 Name = "file.txt"
+		fileInfo := &base.FileInfo{
+			Name:  path.Base(httpReq.URL.Path),
+			Size:  0,
+			Ctime: nil,
+		}
+		// 对路径进行解码，如果需要
+		if fileInfo.Name != "" {
+			if unescaped, err := url.QueryUnescape(fileInfo.Name); err == nil {
+				fileInfo.Name = unescaped
+			}
+		}
+		// 如果依然得不到文件名（例如 URL 末尾为空或 “/”），则以 hostname 作为文件名
+		if fileInfo.Name == "" || fileInfo.Name == "/" || fileInfo.Name == "." {
+			fileInfo.Name = httpReq.URL.Hostname()
+		}
+
+		// 4. 将 fileInfo 加入 res.Files，并保存到 f.meta.Res
+		res.Files = append(res.Files, fileInfo)
+		f.meta.Res = res
+
+		// 5. 直接返回，完全跳过任何 HTTP 请求
+		return nil
+	}
+
 	httpReq, err := f.buildRequest(nil, req)
 	if err != nil {
 		return err

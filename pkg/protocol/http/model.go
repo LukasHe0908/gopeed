@@ -8,6 +8,7 @@ type ReqExtra struct {
 
 type OptsExtra struct {
 	Connections int `json:"connections"`
+	NotRange bool `json:"notRange"`
 	// AutoTorrent when task download complete, and it is a .torrent file, it will be auto create a new task for the torrent file
 	AutoTorrent bool `json:"autoTorrent"`
 }
