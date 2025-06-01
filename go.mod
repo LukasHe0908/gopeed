@@ -6,7 +6,7 @@ toolchain go1.23.1
 
 require (
 	github.com/anacrolix/missinggo/v2 v2.8.0
-	github.com/anacrolix/torrent v1.57.2-0.20241017235801-4d8437a05621
+	github.com/anacrolix/torrent v1.58.1
 	github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5
 	github.com/dop251/goja v0.0.0-20240919115326-6c7d1df7ff05
 	github.com/dop251/goja_nodejs v0.0.0-20240728170619-29b559befffc
@@ -46,7 +46,7 @@ require (
 	github.com/anacrolix/dht/v2 v2.22.0 // indirect
 	github.com/anacrolix/envpprof v1.4.0 // indirect
 	github.com/anacrolix/generics v0.0.3-0.20240902042256-7fb2702ef0ca // indirect
-	github.com/anacrolix/go-libutp v1.3.1 // indirect
+	github.com/anacrolix/go-libutp v1.3.2 // indirect
 	github.com/anacrolix/log v0.16.0 // indirect
 	github.com/anacrolix/missinggo v1.3.0 // indirect
 	github.com/anacrolix/missinggo/perf v1.0.0 // indirect
